@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuminaMoon Pro 360° | Lámpara Proyectora Galáctica y Meteoros</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        cosmic: {
+                            bg: '#090b13',
+                            card: '#131726',
+                            border: '#262d47',
+                            accent: '#00f2fe',
+                            purple: '#9d4edd',
+                            pink: '#f72585',
+                        }
+                    },
+                    boxShadow: {
+                        'neon-cyan': '0 0 25px rgba(0, 242, 254, 0.4)',
+                        'neon-purple': '0 0 25px rgba(157, 78, 221, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #090b13;
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-panel {
+            background: rgba(19, 23, 38, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Pulsing Glow Animations */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(0, 242, 254, 0.8), 0 0 45px rgba(157, 78, 221, 0.5); }
+        }
+
+        .glow-btn {
+            animation: pulseGlow 3s infinite;
+        }
+
+        /* Room Projection Simulator Effect */
+        .room-overlay {
+            mix-blend-mode: screen;
+            transition: all 0.5s ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090b13;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #262d47;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9d4edd;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- 1. ANNOUNCEMENT BAR & HEADER -->
+    <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-cyan-900 text-white text-xs md:text-sm py-2 px-4 text-center font-medium sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 sm:gap-4">
+            <div class="flex items-center gap-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <p>⚡ Oferta Relámpago: <span class="font-bold text-cyan-300">AHORA POR SOLO 9,99 €</span> (Unidades limitadas)</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <span>⏰ Oferta termina en:</span>
+                <span id="countdown" class="font-mono font-bold bg-black/40 px-2 py-0.5 rounded text-yellow-300">14m 32s</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="glass-panel sticky top-[36px] z-40 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 text-xl font-black tracking-wider text-white">
+                <i class="fa-solid fa-moon text-cyan-400 text-2xl"></i>
+                <span>LUMINA<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">SPACE</span></span>
+            </a>
+
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-300">
+                <a href="#simulator" class="hover:text-cyan-400 transition-colors">Simulador 3D</a>
+                <a href="#features" class="hover:text-cyan-400 transition-colors">Características</a>
+                <a href="#before-after" class="hover:text-cyan-400 transition-colors">Demostración</a>
+                <a href="#reviews" class="hover:text-cyan-400 transition-colors">Opiniones (1,280+)</a>
+                <a href="#faq" class="hover:text-cyan-400 transition-colors">FAQ</a>
+            </div>
+
+            <!-- Cart Icon & CTA -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleCart()" class="relative p-2 text-gray-300 hover:text-white transition-colors">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-cyan-400 text-slate-950 font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                </button>
+                <a href="#hero-buy" class="hidden sm:inline-flex bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white px-5 py-2 rounded-full font-bold text-sm transition-all duration-300 shadow-neon-cyan">
+                    Comprar Ahora (9,99 €)
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. HERO SECTION -->
+    <section id="hero-buy" class="relative pt-8 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            
+            <!-- Product Gallery (Left 7 Cols) -->
+            <div class="lg:col-span-7 space-y-4">
+                <div class="relative rounded-2xl overflow-hidden glass-card border border-white/10 aspect-square sm:aspect-[4/3] flex items-center justify-center group">
+                    <img id="main-product-img" src="https://img.kwcdn.com/product/fancy/b1200edf-3576-450c-bd43-b032ba1bf61d.jpg" alt="LuminaMoon Pro Main" class="w-full h-full object-cover transition-all duration-500">
+                    
+                    <span class="absolute top-4 left-4 bg-purple-600/90 text-white font-bold text-xs uppercase px-3 py-1.5 rounded-full backdrop-blur-md">
+                        ✨ Top Ventas #1
+                    </span>
+                    <span class="absolute top-4 right-4 bg-red-500/90 text-white font-bold text-xs uppercase px-3 py-1.5 rounded-full backdrop-blur-md animate-pulse">
+                        -60% DESCUENTO
+                    </span>
+                </div>
+
+                <!-- Gallery Thumbnails -->
+                <div class="grid grid-cols-5 gap-3">
+                    <button onclick="changeMainImage('https://img.kwcdn.com/product/fancy/b1200edf-3576-450c-bd43-b032ba1bf61d.jpg', this)" class="thumb-btn active ring-2 ring-cyan-400 rounded-xl overflow-hidden aspect-square border border-white/10">
+                        <img src="https://img.kwcdn.com/product/fancy/b1200edf-3576-450c-bd43-b032ba1bf61d.jpg" class="w-full h-full object-cover">
+                    </button>
+                    <button onclick="changeMainImage('https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80', this)" class="thumb-btn rounded-xl overflow-hidden aspect-square border border-white/10 hover:opacity-80 transition-opacity">
+                        <img src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+                    </button>
+                    <button onclick="changeMainImage('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80', this)" class="thumb-btn rounded-xl overflow-hidden aspect-square border border-white/10 hover:opacity-80 transition-opacity">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+                    </button>
+                    <button onclick="changeMainImage('https://images.unsplash.com/photo-1538370965046-79c0d6907d47?auto=format&fit=crop&w=800&q=80', this)" class="thumb-btn rounded-xl overflow-hidden aspect-square border border-white/10 hover:opacity-80 transition-opacity">
+                        <img src="https://images.unsplash.com/photo-1538370965046-79c0d6907d47?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+                    </button>
+                    <button onclick="changeMainImage('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80', this)" class="thumb-btn rounded-xl overflow-hidden aspect-square border border-white/10 hover:opacity-80 transition-opacity">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Details & Buying (Right 5 Cols) -->
+            <div class="lg:col-span-5 space-y-6">
+                <div>
+                    <!-- Reviews Badge -->
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="flex text-yellow-400 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <span class="text-xs text-gray-300 font-medium">4.9/5 (1,280+ valoraciones)</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                        LuminaMoon Pro 360°
+                    </h1>
+                    <p class="text-cyan-400 text-sm sm:text-base font-semibold mt-1">
+                        Proyector de Luna, Galaxia y Lluvia de Meteoros HD
+                    </p>
+                </div>
+
+                <!-- Pricing -->
+                <div class="flex items-baseline gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
+                    <span class="text-3xl font-black text-white">9,99 €</span>
+                    <span class="text-lg text-gray-400 line-through">24,99 €</span>
+                    <span class="ml-auto bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2.5 py-1 rounded-md border border-emerald-500/30">Ahorras 15,00 €</span>
+                </div>
+
+                <!-- Key Benefits Bullets -->
+                <ul class="space-y-2.5 text-sm text-gray-300">
+                    <li class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-circle-check text-cyan-400"></i>
+                        <span><strong>10 Diapositivas HD Intercambiables:</strong> Luna, Tierra, Galaxia, Sistema Solar, Aurora, etc.</span>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-circle-check text-cyan-400"></i>
+                        <span><strong>Efecto Lluvia de Meteoros:</strong> Luces dinámicas en movimiento real.</span>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-circle-check text-cyan-400"></i>
+                        <span><strong>Brazo Flexible 360° (Gooseneck):</strong> Conexión USB Plug & Play instantánea.</span>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-circle-check text-cyan-400"></i>
+                        <span>Ideal para Dormitorios, Habitaciones Gaming, Paredes y Fotos.</span>
+                    </li>
+                </ul>
+
+                <!-- Pack Selection / Offer -->
+                <div class="space-y-3">
+                    <label class="block text-xs uppercase tracking-wider text-gray-400 font-bold">Selecciona tu Paquete:</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div onclick="selectPack(1, 9.99, this)" class="pack-option cursor-pointer active border-2 border-cyan-400 bg-cyan-950/30 p-3 rounded-xl transition-all">
+                            <div class="text-xs text-cyan-300 font-bold">1 Unid. LuminaMoon</div>
+                            <div class="text-lg font-bold text-white mt-1">9,99 €</div>
+                            <div class="text-[10px] text-gray-400">Precio especial unitario</div>
+                        </div>
+                        <div onclick="selectPack(2, 16.99, this)" class="pack-option cursor-pointer border border-white/10 bg-white/5 p-3 rounded-xl hover:border-purple-400 transition-all relative overflow-hidden">
+                            <span class="absolute top-0 right-0 bg-purple-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-bl">OFERTA 2X</span>
+                            <div class="text-xs text-purple-300 font-bold">Pack 2 Unidades</div>
+                            <div class="text-lg font-bold text-white mt-1">16,99 €</div>
+                            <div class="text-[10px] text-emerald-400 font-medium">Solo 8,49€ / unidad</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Call to Action Buttons -->
+                <div class="space-y-3 pt-2">
+                    <button onclick="addToCart()" class="w-full glow-btn bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-600 hover:opacity-95 text-slate-950 font-black text-lg py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-bag-shopping text-xl"></i>
+                        <span>AÑADIR AL CARRITO</span>
+                    </button>
+
+                    <button onclick="quickCheckout()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-base py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>COMPRAR AHORA (ENVÍO RÁPIDO)</span>
+                    </button>
+                </div>
+
+                <!-- Trust Guarantees -->
+                <div class="grid grid-cols-3 gap-2 pt-4 border-t border-white/10 text-center text-xs text-gray-400">
+                    <div class="flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-truck-fast text-cyan-400 text-base"></i>
+                        <span>Envío Gratis 24/48h</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-shield-halved text-purple-400 text-base"></i>
+                        <span>Garantía 30 Días</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-lock text-emerald-400 text-base"></i>
+                        <span>Pago 100% Seguro</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. INTERACTIVE SLIDE PROJECTION SIMULATOR -->
+    <section id="simulator" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <span class="text-cyan-400 text-xs font-bold tracking-widest uppercase bg-cyan-950/60 border border-cyan-500/30 px-3 py-1 rounded-full">Experiencia Interactiva</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">Simula las 10 Diapositivas HD en tu Habitación</h2>
+            <p class="text-gray-400 text-sm sm:text-base mt-2">Haz clic en cada una de las lentes intercambiables para transformar virtualmente el techo y las paredes en vivo.</p>
+        </div>
+
+        <div class="glass-panel p-6 sm:p-8 rounded-3xl relative overflow-hidden border border-white/10">
+            <!-- Simulated Room View -->
+            <div class="relative w-full h-[350px] sm:h-[480px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+                <!-- Room Background (Dark Room) -->
+                <img id="sim-room-bg" src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80" alt="Habitación" class="w-full h-full object-cover filter brightness-[0.2] contrast-125">
+
+                <!-- Projection Overlay Effect -->
+                <div id="sim-projection" class="absolute inset-0 room-overlay bg-cover bg-center transition-all duration-700 opacity-90 scale-105" style="background-image: url('https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80'); filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.8));"></div>
+
+                <!-- Meteor Shower Effect Layer -->
+                <div id="sim-meteor" class="absolute inset-0 pointer-events-none opacity-80 hidden">
+                    <div class="w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-400/20 via-transparent to-transparent animate-pulse"></div>
+                </div>
+
+                <!-- Info Overlay Badge -->
+                <div class="absolute bottom-4 left-4 bg-black/70 backdrop-blur-md px-4 py-2 rounded-xl border border-white/20">
+                    <p class="text-xs text-gray-400">Diapositiva Activa:</p>
+                    <p id="sim-slide-name" class="text-sm font-bold text-cyan-300">🌕 Luna Llena HD Realista</p>
+                </div>
+            </div>
+
+            <!-- Slide Selector Buttons Grid -->
+            <div class="mt-6">
+                <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mb-3 text-center sm:text-left">Selecciona una diapositiva (Incluidas las 10 en el paquete):</p>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                    <button onclick="setSimSlide('Luna Llena HD', 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80', false, this)" class="sim-btn active border-2 border-cyan-400 bg-white/10 p-2.5 rounded-xl text-left hover:bg-white/15 transition-all">
+                        <div class="text-xs font-bold text-white">1. Luna Llena HD</div>
+                        <div class="text-[10px] text-cyan-300">Detalle Cráteres</div>
+                    </button>
+                    <button onclick="setSimSlide('Galaxia Vía Láctea', 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80', false, this)" class="sim-btn border border-white/10 bg-white/5 p-2.5 rounded-xl text-left hover:bg-white/15 transition-all">
+                        <div class="text-xs font-bold text-white">2. Vía Láctea</div>
+                        <div class="text-[10px] text-purple-300">Polvo Cósmico</div>
+                    </button>
+                    <button onclick="setSimSlide('Lluvia de Meteoros', 'https://images.unsplash.com/photo-1538370965046-79c0d6907d47?auto=format&fit=crop&w=1200&q=80', true, this)" class="sim-btn border border-white/10 bg-white/5 p-2.5 rounded-xl text-left hover:bg-white/15 transition-all">
+                        <div class="text-xs font-bold text-white">3. Lluvia Meteoros</div>
+                        <div class="text-[10px] text-yellow-300">Efecto Dinámico</div>
+                    </button>
+                    <button onclick="setSimSlide('Planeta Tierra', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80', false, this)" class="sim-btn border border-white/10 bg-white/5 p-2.5 rounded-xl text-left hover:bg-white/15 transition-all">
+                        <div class="text-xs font-bold text-white">4. Planeta Tierra</div>
+                        <div class="text-[10px] text-blue-300">Vista Espacial</div>
+                    </button>
+                    <button onclick="setSimSlide('Aurora Boreal', 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1200&q=80', false, this)" class="sim-btn border border-white/10 bg-white/5 p-2.5 rounded-xl text-left hover:bg-white/15 transition-all">
+                        <div class="text-xs font-bold text-white">5. Aurora Boreal</div>
+                        <div class="text-[10px] text-emerald-300">Verde Neon</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. FEATURES & BENEFITS GRID -->
+    <section id="features" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">¿Por qué LuminaMoon Pro es Única?</h2>
+            <p class="text-gray-400 mt-2 text-sm sm:text-base">Diseñada para transformar por completo la atmósfera de cualquier espacio en segundos por solo 9,99 €.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Feature 1 -->
+            <div class="glass-card p-6 rounded-2xl border border-white/10 hover:border-cyan-400/50 transition-all group">
+                <div class="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center text-cyan-400 text-2xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-images"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">10 Lentes HD Intercambiables</h3>
+                <p class="text-gray-400 text-sm">Incluye 10 discos de proyección de alta definición con lentes ópticas de cristal para máxima nitidez.</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="glass-card p-6 rounded-2xl border border-white/10 hover:border-purple-400/50 transition-all group">
+                <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400 text-2xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-meteor"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Efecto Lluvia de Meteoros</h3>
+                <p class="text-gray-400 text-sm">Proyección con movimiento de estrellas fugaces para crear un efecto relajante perfecto para dormir.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="glass-card p-6 rounded-2xl border border-white/10 hover:border-emerald-400/50 transition-all group">
+                <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 text-2xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Cuello Flexible 360°</h3>
+                <p class="text-gray-400 text-sm">Ajusta el ángulo fácilmente hacia techos, paredes o rincones sin importar la posición del enchufe USB.</p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="glass-card p-6 rounded-2xl border border-white/10 hover:border-pink-400/50 transition-all group">
+                <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center text-pink-400 text-2xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-plug text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">USB Plug & Play</h3>
+                <p class="text-gray-400 text-sm">Conéctalo a cargadores de móvil, powerbanks, portátiles o puertos TV. Consumo ultrabajo silencioso.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. BEFORE & AFTER ROOM SHOWCASE -->
+    <section id="before-after" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="glass-panel p-8 rounded-3xl border border-white/10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-4">
+                    <span class="text-purple-400 font-bold text-xs uppercase tracking-wider">Transformación Instantánea</span>
+                    <h2 class="text-3xl font-extrabold text-white">De una habitación aburrida a un universo mágico</h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Mira el cambio radical. LuminaMoon Pro elimina la monotonía de las paredes blancas para crear un espacio de relajación, meditación o estética ideal para redes sociales.
+                    </p>
+
+                    <!-- Interactive Toggle Button -->
+                    <div class="pt-2">
+                        <button id="toggle-room-btn" onclick="toggleRoomState()" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold px-6 py-3 rounded-xl transition-all flex items-center gap-3">
+                            <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+                            <span id="toggle-btn-text">Encender Proyector (Ver Mágia)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Showcase Image Container -->
+                <div class="lg:col-span-7 relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-white/10">
+                    <!-- Off Image -->
+                    <img id="room-off" src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1000&q=80" class="absolute inset-0 w-full h-full object-cover filter brightness-50 transition-opacity duration-700 opacity-100" alt="Habitacion Normal">
+                    
+                    <!-- On Image -->
+                    <img id="room-on" src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1000&q=80" class="absolute inset-0 w-full h-full object-cover mix-blend-screen transition-opacity duration-700 opacity-0 scale-105" alt="Habitacion Proyectada">
+
+                    <div id="room-badge" class="absolute top-4 right-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-red-400 border border-white/10">
+                        🔴 Lámpara Apagada
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. REVIEWS & SOCIAL PROOF -->
+    <section id="reviews" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Lo que dicen nuestros clientes</h2>
+            <p class="text-gray-400 mt-2 text-sm">Más de 1,280 compradores satisfechos en toda España.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Review 1 -->
+            <div class="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex text-yellow-400 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <span class="text-xs text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> Compra Verificada</span>
+                </div>
+                <p class="text-gray-300 text-sm italic">"Por solo 9,99€ es un regalazo. La diapositiva de la luna tiene muchísimo detalle y el efecto de los meteoros es precioso para ponerlo por las noches."</p>
+                <div class="flex items-center gap-3 pt-2">
+                    <div class="w-10 h-10 rounded-full bg-cyan-500/30 font-bold text-cyan-300 flex items-center justify-center">MC</div>
+                    <div>
+                        <p class="text-sm font-bold text-white">María Camargo</p>
+                        <p class="text-xs text-gray-400">Madrid, España</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex text-yellow-400 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <span class="text-xs text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> Compra Verificada</span>
+                </div>
+                <p class="text-gray-300 text-sm italic">"Aproveché el pack de 2 por 16,99€ y me quedé uno para el escritorio gaming y otro para el salón. Queda increíble en vídeos de TikTok."</p>
+                <div class="flex items-center gap-3 pt-2">
+                    <div class="w-10 h-10 rounded-full bg-purple-500/30 font-bold text-purple-300 flex items-center justify-center">AG</div>
+                    <div>
+                        <p class="text-sm font-bold text-white">Alejandro G.</p>
+                        <p class="text-xs text-gray-400">Barcelona, España</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex text-yellow-400 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <span class="text-xs text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> Compra Verificada</span>
+                </div>
+                <p class="text-gray-300 text-sm italic">"Me llegó en apenas 24 horas y todo genial. Cambiar los disquitos de proyección es rápido e intuitivo."</p>
+                <div class="flex items-center gap-3 pt-2">
+                    <div class="w-10 h-10 rounded-full bg-pink-500/30 font-bold text-pink-300 flex items-center justify-center">LR</div>
+                    <div>
+                        <p class="text-sm font-bold text-white">Lucía R.</p>
+                        <p class="text-xs text-gray-400">Valencia, España</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. FAQ ACCORDION -->
+    <section id="faq" class="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-extrabold text-white">Preguntas Frecuentes</h2>
+            <p class="text-gray-400 text-sm mt-1">Resolvemos tus dudas antes de comprar.</p>
+        </div>
+
+        <div class="space-y-4">
+            <!-- FAQ 1 -->
+            <div class="glass-panel rounded-2xl overflow-hidden border border-white/10">
+                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-bold text-white flex justify-between items-center hover:bg-white/5 transition-colors">
+                    <span>¿El precio de 9,99 € incluye las 10 diapositivas?</span>
+                    <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                </button>
+                <div class="faq-content hidden p-5 pt-0 text-sm text-gray-300 border-t border-white/5">
+                    Sí, por solo 9,99 € recibes la lámpara proyectora junto con la colección completa de 10 diapositivas HD de cristal (Luna, Galaxias, Tierra, Nebulosas, Meteoros, etc.).
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="glass-panel rounded-2xl overflow-hidden border border-white/10">
+                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-bold text-white flex justify-between items-center hover:bg-white/5 transition-colors">
+                    <span>¿Cómo se alimenta la lámpara?</span>
+                    <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                </button>
+                <div class="faq-content hidden p-5 pt-0 text-sm text-gray-300 border-t border-white/5">
+                    Funciona mediante puerto USB genérico (Plug and Play). Puedes conectarla directamente al cargador de tu smartphone, un ordenador, una batería externa (powerbank) o el puerto USB de tu TV.
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="glass-panel rounded-2xl overflow-hidden border border-white/10">
+                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-bold text-white flex justify-between items-center hover:bg-white/5 transition-colors">
+                    <span>¿Cuánto tarda el envío y qué garantía tiene?</span>
+                    <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                </button>
+                <div class="faq-content hidden p-5 pt-0 text-sm text-gray-300 border-t border-white/5">
+                    Ofrecemos Envío Exprés Gratis (24/48 horas) dentro de la península. Además, cuentas con 30 días de garantía de devolución sin preguntas si no quedas 100% satisfecho.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 py-10 px-4 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto space-y-4">
+            <p class="font-bold text-gray-300">LuminaSpace España © 2026. Todos los derechos reservados.</p>
+            <p class="max-w-xl mx-auto">Esta web es una demostración de tienda e-commerce de alta conversión optimizada para la lámpara proyectora LuminaMoon Pro 360°.</p>
+        </div>
+    </footer>
+
+    <!-- 8. CART DRAWER & CHECKOUT MODAL -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
+        <!-- Backdrop -->
+        <div onclick="toggleCart()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+
+        <!-- Sliding Panel -->
+        <div id="cart-panel" class="absolute top-0 right-0 bottom-0 w-full max-w-md bg-slate-900 border-l border-white/10 p-6 flex flex-col justify-between transform translate-x-full transition-transform duration-300 pointer-events-auto">
+            
+            <!-- Drawer Header -->
+            <div>
+                <div class="flex items-center justify-between pb-4 border-b border-white/10">
+                    <h3 class="text-lg font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-cyan-400"></i> Tu Carrito
+                    </h3>
+                    <button onclick="toggleCart()" class="text-gray-400 hover:text-white p-2">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Free Shipping Progress -->
+                <div class="mt-4 p-3 rounded-xl bg-cyan-950/40 border border-cyan-500/30">
+                    <p class="text-xs text-cyan-300 font-bold text-center">🎉 ¡Enhorabuena! Tienes ENVÍO GRATIS activo</p>
+                    <div class="w-full bg-slate-800 h-2 rounded-full mt-2 overflow-hidden">
+                        <div class="bg-cyan-400 h-full w-full"></div>
+                    </div>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items" class="mt-6 space-y-4">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <!-- Upsell offer inside drawer -->
+                <div class="mt-6 p-3 rounded-xl glass-card border border-purple-500/30 flex items-center gap-3">
+                    <i class="fa-solid fa-gift text-purple-400 text-2xl"></i>
+                    <div class="text-xs">
+                        <p class="font-bold text-white">Añade Set de Lentes Extra</p>
+                        <p class="text-gray-400">+5 diapositivas fantásticas por solo 2,99 €</p>
+                    </div>
+                    <button onclick="addUpsell()" class="ml-auto text-xs bg-purple-600 hover:bg-purple-500 text-white font-bold px-3 py-1.5 rounded-lg transition-colors">
+                        Añadir
+                    </button>
+                </div>
+            </div>
+
+            <!-- Drawer Footer / Checkout -->
+            <div class="pt-4 border-t border-white/10 space-y-4">
+                <div class="space-y-1.5 text-sm">
+                    <div class="flex justify-between text-gray-400">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal">9,99 €</span>
+                    </div>
+                    <div class="flex justify-between text-gray-400">
+                        <span>Envío</span>
+                        <span class="text-emerald-400 font-bold">GRATIS</span>
+                    </div>
+                    <div class="flex justify-between text-lg font-extrabold text-white pt-2 border-t border-white/5">
+                        <span>Total</span>
+                        <span id="cart-total" class="text-cyan-400">9,99 €</span>
+                    </div>
+                </div>
+
+                <button onclick="processCheckout()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-4 rounded-xl text-center transition-all shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>FINALIZAR PEDIDO SEGURO</span>
+                </button>
+
+                <!-- Payment Icons -->
+                <div class="flex items-center justify-center gap-4 text-gray-400 text-xl pt-2">
+                    <i class="fa-brands fa-cc-visa"></i>
+                    <i class="fa-brands fa-cc-mastercard"></i>
+                    <i class="fa-brands fa-cc-paypal"></i>
+                    <i class="fa-brands fa-apple-pay"></i>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // State variables
+        let selectedPackQty = 1;
+        let selectedPackPrice = 9.99;
+        let cartItemsCount = 0;
+        let upsellAdded = false;
+
+        // 1. Gallery Image Changer
+        function changeMainImage(src, btnElement) {
+            document.getElementById('main-product-img').src = src;
+            document.querySelectorAll('.thumb-btn').forEach(b => {
+                b.classList.remove('ring-2', 'ring-cyan-400');
+            });
+            btnElement.classList.add('ring-2', 'ring-cyan-400');
+        }
+
+        // 2. Pack Selection
+        function selectPack(qty, price, el) {
+            selectedPackQty = qty;
+            selectedPackPrice = price;
+            
+            document.querySelectorAll('.pack-option').forEach(p => {
+                p.classList.remove('border-2', 'border-cyan-400', 'bg-cyan-950/30');
+                p.classList.add('border-white/10', 'bg-white/5');
+            });
+
+            el.classList.remove('border-white/10', 'bg-white/5');
+            el.classList.add('border-2', 'border-cyan-400', 'bg-cyan-950/30');
+
+            updateCartUI();
+        }
+
+        // 3. Cart Logic
+        function addToCart() {
+            cartItemsCount = selectedPackQty;
+            updateCartUI();
+            toggleCart();
+        }
+
+        function quickCheckout() {
+            addToCart();
+            processCheckout();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-badge').innerText = cartItemsCount || selectedPackQty;
+            
+            const cartItemsContainer = document.getElementById('cart-items');
+            let total = selectedPackPrice + (upsellAdded ? 2.99 : 0);
+
+            cartItemsContainer.innerHTML = `
+                <div class="flex gap-4 p-3 rounded-xl bg-white/5 border border-white/10">
+                    <img src="https://img.kwcdn.com/product/fancy/b1200edf-3576-450c-bd43-b032ba1bf61d.jpg" class="w-16 h-16 rounded-lg object-cover">
+                    <div class="flex-1">
+                        <h4 class="text-sm font-bold text-white">LuminaMoon Pro 360°</h4>
+                        <p class="text-xs text-gray-400">Pack: ${selectedPackQty} unidad(es)</p>
+                        <p class="text-sm font-bold text-cyan-400 mt-1">${selectedPackPrice.toFixed(2)} €</p>
+                    </div>
+                </div>
+            `;
+
+            if (upsellAdded) {
+                cartItemsContainer.innerHTML += `
+                    <div class="flex gap-4 p-3 rounded-xl bg-purple-950/30 border border-purple-500/30">
+                        <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-300">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-xs font-bold text-white">Set 5 Lentes Extra</h4>
+                            <p class="text-xs font-bold text-purple-300 mt-1">2,99 €</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('cart-subtotal').innerText = total.toFixed(2) + ' €';
+            document.getElementById('cart-total').innerText = total.toFixed(2) + ' €';
+        }
+
+        function addUpsell() {
+            if(!upsellAdded) {
+                upsellAdded = true;
+                updateCartUI();
+            }
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const panel = document.getElementById('cart-panel');
+            
+            if (drawer.classList.contains('opacity-0')) {
+                drawer.classList.remove('opacity-0', 'pointer-events-none');
+                panel.classList.remove('translate-x-full');
+            } else {
+                drawer.classList.add('opacity-0', 'pointer-events-none');
+                panel.classList.add('translate-x-full');
+            }
+        }
+
+        function processCheckout() {
+            alert('🛍️ Redirigiendo a la pasarela de pago segura de LuminaSpace...');
+        }
+
+        // 4. Projection Simulator
+        function setSimSlide(name, imgUrl, hasMeteor, btn) {
+            document.getElementById('sim-projection').style.backgroundImage = `url('${imgUrl}')`;
+            document.getElementById('sim-slide-name').innerText = '✨ ' + name;
+
+            const meteorLayer = document.getElementById('sim-meteor');
+            if (hasMeteor) {
+                meteorLayer.classList.remove('hidden');
+            } else {
+                meteorLayer.classList.add('hidden');
+            }
+
+            document.querySelectorAll('.sim-btn').forEach(b => {
+                b.classList.remove('border-2', 'border-cyan-400', 'bg-white/10');
+                b.classList.add('border-white/10', 'bg-white/5');
+            });
+
+            btn.classList.remove('border-white/10', 'bg-white/5');
+            btn.classList.add('border-2', 'border-cyan-400', 'bg-white/10');
+        }
+
+        // 5. Before / After Toggle
+        let roomStateOn = false;
+        function toggleRoomState() {
+            roomStateOn = !roomStateOn;
+            const roomOn = document.getElementById('room-on');
+            const roomBadge = document.getElementById('room-badge');
+            const btnText = document.getElementById('toggle-btn-text');
+
+            if(roomStateOn) {
+                roomOn.classList.remove('opacity-0');
+                roomOn.classList.add('opacity-100');
+                roomBadge.innerHTML = '🟢 Lámpara Encendida';
+                roomBadge.className = 'absolute top-4 right-4 bg-emerald-950/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-emerald-300 border border-emerald-500/30';
+                btnText.innerText = 'Apagar Proyector';
+            } else {
+                roomOn.classList.remove('opacity-100');
+                roomOn.classList.add('opacity-0');
+                roomBadge.innerHTML = '🔴 Lámpara Apagada';
+                roomBadge.className = 'absolute top-4 right-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-red-400 border border-white/10';
+                btnText.innerText = 'Encender Proyector (Ver Mágia)';
+            }
+        }
+
+        // 6. FAQ Accordion Toggle
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // 7. Countdown Timer
+        let totalSeconds = 14 * 60 + 32;
+        setInterval(() => {
+            if (totalSeconds > 0) {
+                totalSeconds--;
+                const m = Math.floor(totalSeconds / 60);
+                const s = totalSeconds % 60;
+                document.getElementById('countdown').innerText = `${m}m ${s < 10 ? '0' : ''}${s}s`;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
